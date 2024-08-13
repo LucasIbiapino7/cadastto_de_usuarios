@@ -92,4 +92,23 @@ public class FileService {
         System.out.println("List: " + questions.getList());
 
     }
+
+    public static ArrayList<User> searchName(String nameSearch, List<User> users) {
+
+        ArrayList<User> result = new ArrayList<>();
+        int cont = 0;
+
+        for (User user : users) {
+            if (user.getName().contains(nameSearch)){
+                result.add(user);
+                cont++;
+                if (cont >= 2){
+                    break;
+                }
+            }
+        }
+
+        return result;
+
+    }
 }

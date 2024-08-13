@@ -58,6 +58,19 @@ public class Main {
                     System.out.println("Digite o número da pergunta que quer excluir:");
                     int num = scanner.nextInt();
                     FileService.deleteQuestion(num, questions);
+                    break;
+                case 5:
+                    System.out.print("Digite o nome que vai pesquisar: ");
+                    String nameSearch = scanner.nextLine();
+                    ArrayList<User> usersResult = FileService.searchName(nameSearch, users);
+                    if (usersResult.isEmpty()){
+                        System.out.println("Nenhum usuário encontrado");
+                    } else {
+                        for (User userResult : usersResult) {
+                            System.out.println(userResult);
+                        }
+                    }
+                    break;
                 case 6:
                     break;
             }
