@@ -8,8 +8,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         List<User> users = new ArrayList<>();
 
-        users.add(new User());
-
         Questions questions = FileService.readAndPersist();
 
         for (String question : questions.getList()) {
