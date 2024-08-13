@@ -1,3 +1,6 @@
+import exceptions.EmailException;
+import exceptions.NameException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -28,14 +31,20 @@ public class Main {
                         System.out.println((i + 1) + " - " + questions.getList().get(i));
                     }
                     System.out.println("Responda as perguntas:");
-                    String name = scanner.nextLine();
-                    String email = scanner.nextLine();
-                    Integer age = scanner.nextInt();
-                    Double height = scanner.nextDouble();
+                    try {
+                        String name = scanner.nextLine();
+                        Validate.name(name);
+                        String email = scanner.nextLine();
+                        Validate.email(email, users);
+                        Integer age = scanner.nextInt();
+                        Double height = scanner.nextDouble();
 
-                    User user = new User(name, email, age, height);
+                        User user = new User(name, email, age, height);
 
-                    FileService.saveFileUser(user, users);
+                        FileService.saveFileUser(user, users);
+                    }catch (NameException | EmailException e){
+                        System.out.println(e.getMessage());
+                    }
 
                     break;
                 case 2:
@@ -44,6 +53,8 @@ public class Main {
                     for (int i = 0; i < users.size(); i++) {
                         System.out.println((i + 1) + " - " + users.get(i).getName());
                     }
+
+                    System.out.println("-----------------------");
                     break;
                 case 3:
                     System.out.println("Digite a nova pergunta a ser cadastrada:");
@@ -79,7 +90,6 @@ public class Main {
                 break;
             }
         }
-
 
         scanner.close();
 
