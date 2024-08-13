@@ -9,7 +9,8 @@ public class FileService {
         try (BufferedReader br = new BufferedReader(new FileReader(new File("formulario.txt")))) {
             String line = br.readLine();
             while (line != null) {
-                questions.addQuestion(line);
+                String[] split = line.split(" - ");
+                questions.addQuestion(split[1]);
                 line = br.readLine();
             }
         } catch (IOException e) {
@@ -32,9 +33,12 @@ public class FileService {
             bw.append(Integer.toString(user.getAge()));
             bw.append(",");
             bw.append(Double.toString(user.getHeight()));
+            bw.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        users.add(user);
 
     }
 
@@ -48,4 +52,44 @@ public class FileService {
         return fileName;
     }
 
+    public static void addNewQuestion(String question, Questions questions) {
+        questions.addQuestion(question);
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File("formulario.txt"), true))){
+            String newQuestion = (questions.getTam() + 1) + " - ";
+            newQuestion = newQuestion.concat(question);
+            bw.newLine();
+            bw.append(newQuestion);
+            bw.flush();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        System.out.println("List: " + questions.getList());
+    }
+
+    public static void deleteQuestion(int num, Questions questions) {
+        if (num <= 4){
+            System.out.println("Você não pode apagar essa pergunta!");
+            return;
+        }
+
+        if (num > questions.getTam()){
+            System.out.println("Essa pergunta não existe!");
+            return;
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File("formulario.txt")))){
+               questions.deleteQuestion(num);
+            for (int i = 0; i < questions.getList().size(); i++) {
+                String newQuestion = (i + 1) + " - " + questions.getList().get(i);
+                bw.append(newQuestion);
+                bw.newLine();
+                bw.flush();
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        System.out.println("List: " + questions.getList());
+
+    }
 }
