@@ -23,9 +23,9 @@ public class FileService {
         String fileName = concatenateName(user.getName(), users.size() + 1);
         System.out.println(fileName);
 
-        File file = new File("D:\\dev-dojo-java\\sistemadecastastro\\users\\" + fileName);
+        File file = new File(fileName);
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
             bw.append(user.getName());
             bw.append(",");
             bw.append(user.getEmail());
@@ -55,7 +55,7 @@ public class FileService {
     public static void addNewQuestion(String question, Questions questions) {
         questions.addQuestion(question);
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File("formulario.txt"), true))){
-            String newQuestion = (questions.getTam() + 1) + " - ";
+            String newQuestion = (questions.getTam()) + " - ";
             newQuestion = newQuestion.concat(question);
             bw.newLine();
             bw.append(newQuestion);
@@ -82,7 +82,9 @@ public class FileService {
             for (int i = 0; i < questions.getList().size(); i++) {
                 String newQuestion = (i + 1) + " - " + questions.getList().get(i);
                 bw.append(newQuestion);
-                bw.newLine();
+                if (i < (questions.getList().size() - 1)){
+                    bw.newLine();
+                }
                 bw.flush();
             }
         }catch (IOException e){
